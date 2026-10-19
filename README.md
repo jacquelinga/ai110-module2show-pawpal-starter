@@ -55,21 +55,19 @@ Available time: 45 minutes
 Total scheduled: 40 minutes
 ```
 
-## 🧪 Testing PawPal+
+## Testing PawPal+
 
 ```bash
-# Run the full test suite:
-pytest
-
-# Run with coverage:
-pytest --cov
+python3 -m pytest
 ```
 
-Sample test output:
+The automated tests cover task addition and completion, chronological sorting, daily recurring tasks, and conflict detection.
 
 ```
-# Paste your pytest output here
+5 passed in 0.02s
 ```
+
+**Confidence Level:** 5/5 stars
 
 ## 📐 Smarter Scheduling
 
