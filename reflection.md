@@ -2,21 +2,18 @@
 
 ## 1. System Design
 
-**a. Initial design**
+My initial UML design includes four main classes: Owner, Pet, Task, and Scheduler.
 
-- Briefly describe your initial UML design.
-- What classes did you include, and what responsibilities did you assign to each?
-
+- Owner stores the owner's name, available time, and preferences.
+- Pet stores basic information about the pet, including its name, species, and age.
+- Task represents a pet care task and stores its name, duration, priority, and category.
+- Scheduler manages the collection of tasks and is responsible for adding or editing tasks and generating a daily plan based on the owner's available time and preferences.
 **b. Design changes**
 
-- Did your design change during implementation?
-- If yes, describe at least one change and why you made it.
+After reviewing the class skeleton with AI, I noticed that the UML showed an Owner caring for one or more Pets, but the Owner class did not store any pets. I updated the Owner class to include a pet collection so this relationship is represented in the code.
 
-1. The user can add and manage care tasks for their pet, including each task's duration and priority.
+I also changed the Scheduler's task collection from `tasks` to `_tasks` to better match the private attribute shown in the UML.
 
-2. The user can generate a daily pet-care schedule based on available time, task priorities, and owner preferences.
-
-3. The user can view the generated daily plan and see an explanation of why the tasks were scheduled that way.
 
 ---
 
