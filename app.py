@@ -1,20 +1,13 @@
 import streamlit as st
-from pawpal_system import Owner, Pet, Task
+from datetime import time
+
+from pawpal_system import Owner, Pet, Scheduler, Task
 
 st.set_page_config(page_title="PawPal+", page_icon="🐾", layout="centered")
 
 st.title("🐾 PawPal+")
 
-st.markdown(
-    """
-Welcome to the PawPal+ starter app.
-
-This file is intentionally thin. It gives you a working Streamlit app so you can start quickly,
-but **it does not implement the project logic**. Your job is to design the system and build it.
-
-Use this app as your interactive demo once your backend classes/functions exist.
-"""
-)
+st.markdown("Add pets and their care tasks, then generate a schedule ordered by time.")
 
 with st.expander("Scenario", expanded=True):
     st.markdown(
@@ -68,45 +61,89 @@ else:
     st.info("No pets added yet.")
 
 st.markdown("### Tasks")
-st.caption("Add a few tasks. In your final version, these should feed into your scheduler.")
+st.caption("Add a care task for one of your pets.")
 
-if "tasks" not in st.session_state:
-    st.session_state.tasks = []
+if st.session_state.owner.pets:
+    selected_pet = st.selectbox(
+        "Pet",
+        st.session_state.owner.pets,
+        format_func=lambda pet: f"{pet.name} ({pet.species})",
+    )
+else:
+    selected_pet = None
+    st.info("Add a pet before adding tasks.")
 
-col1, col2, col3 = st.columns(3)
+col1, col2, col3, col4 = st.columns(4)
 with col1:
     task_title = st.text_input("Task title", value="Morning walk")
 with col2:
     duration = st.number_input("Duration (minutes)", min_value=1, max_value=240, value=20)
 with col3:
     priority = st.selectbox("Priority", ["low", "medium", "high"], index=2)
+with col4:
+    task_time = st.time_input("Time", value=time(8, 0))
 
 if st.button("Add task"):
-    st.session_state.tasks.append(
-        {"title": task_title, "duration_minutes": int(duration), "priority": priority}
-    )
+    if selected_pet is None:
+        st.warning("Add a pet before creating a task.")
+    else:
+        task = Task(
+            name=task_title.strip(),
+            durationMinutes=int(duration),
+            priority=priority,
+            category="care",
+            time=task_time.strftime("%H:%M"),
+        )
+        Scheduler().addTask(selected_pet, task)
 
-if st.session_state.tasks:
+owner_tasks = st.session_state.owner.getAllTasks()
+if owner_tasks:
     st.write("Current tasks:")
-    st.table(st.session_state.tasks)
+    st.table(
+        [
+            {
+                "pet": pet.name,
+                "task": task.name,
+                "time": task.time,
+                "duration (minutes)": task.durationMinutes,
+                "priority": task.priority,
+            }
+            for pet in st.session_state.owner.pets
+            for task in pet.tasks
+        ]
+    )
 else:
     st.info("No tasks yet. Add one above.")
 
 st.divider()
 
-st.subheader("Build Schedule")
-st.caption("This button should call your scheduling logic once you implement it.")
+st.subheader("Schedule")
+st.caption("Tasks are ordered by time, and matching dates and times are flagged.")
 
 if st.button("Generate schedule"):
-    st.warning(
-        "Not implemented yet. Next step: create your scheduling logic (classes/functions) and call it here."
-    )
-    st.markdown(
-        """
-Suggested approach:
-1. Design your UML (draft).
-2. Create class stubs (no logic).
-3. Implement scheduling behavior.
-4. Connect your scheduler here and display results.
-"""
-    )
+    scheduler = Scheduler()
+    scheduler.getTasks(st.session_state.owner)
+    sorted_tasks = scheduler.sort_by_time()
+    conflicts = scheduler.detect_conflicts()
+
+    if conflicts:
+        for conflict in conflicts:
+            st.warning(conflict)
+    else:
+        st.success("No scheduling conflicts found.")
+
+    if sorted_tasks:
+        st.table(
+            [
+                {
+                    "date": task.due_date.isoformat(),
+                    "time": task.time,
+                    "task": task.name,
+                    "duration (minutes)": task.durationMinutes,
+                    "priority": task.priority,
+                }
+                for task in sorted_tasks
+            ]
+        )
+    else:
+        st.info("No tasks to schedule yet.")

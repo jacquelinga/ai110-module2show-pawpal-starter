@@ -1,0 +1,53 @@
+classDiagram
+    class Owner {
+        +str name
+        +int availableTimeMinutes
+        +List~str~ preferences
+        +List~Pet~ pets
+        +__init__(name: str, availableTimeMinutes: int, preferences: List~str~)
+        +setAvailableTime(minutes: int) -> None
+        +updatePreferences(preferences: List~str~) -> None
+        +addPet(pet: Pet) -> None
+        +getAllTasks() -> List~Task~
+    }
+
+    class Pet {
+        +str name
+        +str species
+        +int age
+        +List~Task~ tasks
+        +addTask(task: Task) -> None
+    }
+
+    class Task {
+        +str name
+        +int durationMinutes
+        +str priority
+        +str category
+        +str description
+        +str frequency
+        +bool isComplete
+        +str time
+        +date due_date
+        +edit(name: str | None = None, durationMinutes: int | None = None, priority: str | None = None, category: str | None = None, description: str | None = None, frequency: str | None = None, isComplete: bool | None = None) -> None
+        +mark_complete() -> Task | None
+    }
+
+    class Scheduler {
+        -List~Task~ _tasks
+        +__init__()
+        +getTasks(owner: Owner) -> List~Task~
+        +filter_tasks(owner: Owner, is_complete: bool | None = None, pet_name: str | None = None) -> List~Task~
+        +addTask(pet: Pet, task: Task) -> None
+        +completeTask(pet: Pet, task: Task) -> Task | None
+        +sort_by_time() -> List~Task~
+        +detect_conflicts() -> List~str~
+        +editTask(task: Task, name: str | None = None, durationMinutes: int | None = None, priority: str | None = None, category: str | None = None, description: str | None = None, frequency: str | None = None, isComplete: bool | None = None) -> None
+        +generateDailyPlan(owner: Owner) -> List~Task~
+    }
+
+    Owner "1" o-- "0..*" Pet : pets
+    Pet "1" o-- "0..*" Task : tasks
+    Scheduler ..> Owner : reads task list for
+    Scheduler ..> Pet : adds / updates tasks for
+    Scheduler ..> Task : tracks and schedules

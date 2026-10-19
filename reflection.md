@@ -35,11 +35,13 @@ I chose to flag only tasks with the exact same date and time instead of checking
 
 - How did you use AI tools during this project (for example: design brainstorming, debugging, refactoring)?
 - What kinds of prompts or questions were most helpful?
+I used AI throughout the project for design brainstorming, writing and improving code, debugging, testing, and reviewing my implementation. The most helpful prompts were specific questions about one feature at a time, such as how to sort tasks by time, create recurring tasks, or detect scheduling conflicts.
 
 **b. Judgment and verification**
 
 - Describe one moment where you did not accept an AI suggestion as-is.
 - How did you evaluate or verify what the AI suggested?
+I did not accept every AI suggestion as is. For example, I chose to keep conflict detection simple by checking for tasks with the exact same date and time instead of adding more complicated overlapping-duration logic. I verified AI suggestions by reviewing the changes, running the program, and using pytest to make sure the tests passed.
 
 ---
 
@@ -49,11 +51,13 @@ I chose to flag only tasks with the exact same date and time instead of checking
 
 - What behaviors did you test?
 - Why were these tests important?
+I tested task sorting, reoccuring tasks, conflict detection, adding tasks, and marking tasks complete. These were importwant because they verified that the main scheduling features worked correctly. 
 
 **b. Confidence**
 
 - How confident are you that your scheduler works correctly?
 - What edge cases would you test next if you had more time?
+Im very confident it works correctly. I would test all sorts of situations like empty schedules and overlapping. 
 
 ---
 
@@ -62,11 +66,14 @@ I chose to flag only tasks with the exact same date and time instead of checking
 **a. What went well**
 
 - What part of this project are you most satisfied with?
+I like that all parts of this project work together. 
 
 **b. What you would improve**
 
 - If you had another iteration, what would you improve or redesign?
+I would implement more detailed conflict detections for multiple scenerios that can occur.
 
 **c. Key takeaway**
 
 - What is one important thing you learned about designing systems or working with AI on this project?
+AI can certainly make things run faster but engineers still need to understand code and make final decisions. I had to give AI clear instructions, review it's suggestions, test the results, and decide what to keep. 
