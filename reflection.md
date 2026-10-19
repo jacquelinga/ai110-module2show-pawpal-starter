@@ -12,11 +12,16 @@
 - Did your design change during implementation?
 - If yes, describe at least one change and why you made it.
 
+1. The user can add and manage care tasks for their pet, including each task's duration and priority.
+
+2. The user can generate a daily pet-care schedule based on available time, task priorities, and owner preferences.
+
+3. The user can view the generated daily plan and see an explanation of why the tasks were scheduled that way.
+
 ---
 
 ## 2. Scheduling Logic and Tradeoffs
 
-**a. Constraints and priorities**
 
 - What constraints does your scheduler consider (for example: time, priority, preferences)?
 - How did you decide which constraints mattered most?
