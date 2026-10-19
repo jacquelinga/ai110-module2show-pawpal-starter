@@ -25,8 +25,7 @@ I also changed the Scheduler's task collection from `tasks` to `_tasks` to bette
 
 **b. Tradeoffs**
 
-- Describe one tradeoff your scheduler makes.
-- Why is that tradeoff reasonable for this scenario?
+I chose to flag only tasks with the exact same date and time instead of checking whether their durations overlap. This keeps the conflict check simple and easy to read, but it may miss tasks whose time ranges overlap.
 
 ---
 
